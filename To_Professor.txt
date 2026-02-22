@@ -1,0 +1,2 @@
+To test the program, please install JDK25 on your machine and then:
+java -jar SDES-1.0-SNAPSHOT.jar

@@ -25,6 +25,11 @@ public class ModifiedSDES {
             {0,1,2,3}
     };
 
+    /**
+     * Breaks the entire block into two halves <br>
+     * E.g. 10010010 into 1001 & 0010
+     * @return a two-dimensional array, [[1,0,0,1],[0,0,1,0]]
+     * */
     private static int[][] breakIntoHalf(int[] block){
         //Break the entire 10 bit key into 2 halves
         final var HALF_LENGTH = block.length/2;
@@ -243,7 +248,7 @@ public class ModifiedSDES {
     }
 
     public static int[] decrypt(int[] cipherText, int[] key){
-        if(cipherText.length != 8) throw new IllegalArgumentException("Incorrect Plain-Text length");
+        if(cipherText.length != 8) throw new IllegalArgumentException("Incorrect Cipher-Text length");
         if(key.length != 10) throw new IllegalArgumentException("Incorrect Key length");
         var permutedGeneratedKeys = keyGeneration(key);
         var K1 = permutedGeneratedKeys[0];

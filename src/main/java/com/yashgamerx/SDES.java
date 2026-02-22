@@ -243,7 +243,7 @@ public class SDES {
     }
 
     public static int[] decrypt(int[] cipherText, int[] key){
-        if(cipherText.length != 8) throw new IllegalArgumentException("Incorrect Plain-Text length");
+        if(cipherText.length != 8) throw new IllegalArgumentException("Incorrect Cipher-Text length");
         if(key.length != 10) throw new IllegalArgumentException("Incorrect Key length");
         var permutedGeneratedKeys = keyGeneration(key);
         var K1 = permutedGeneratedKeys[0];
