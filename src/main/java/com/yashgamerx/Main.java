@@ -10,24 +10,38 @@ public class Main {
 
     static void main(String[] args) {
 
-        Scanner in = new Scanner(System.in);
+        var in = new Scanner(System.in);
 
         System.out.print("Enter 10-bit key (e.g. 1010000010): ");
-        int[] key = parseBinaryInput(in.nextLine(), 10);
+        var key = parseBinaryInput(in.nextLine(), 10);
 
         System.out.print("Enter 8-bit plaintext (e.g. 10111101): ");
-        int[] plainText = parseBinaryInput(in.nextLine(), 8);
+        var plainText = parseBinaryInput(in.nextLine(), 8);
+
+        System.out.print("Enter 1 for SDES\nEnter 2 for S1~Modified SDES\n");
+        var choice = in.nextInt();
 
         log.info("Plain Text: " + Arrays.toString(plainText));
         log.info("Key: " + Arrays.toString(key));
+        switch (choice) {
+            case 1:{
+                var cipherText = SDES.encrypt(plainText, key);
+                log.info("Cipher Text: " + Arrays.toString(cipherText));
 
-        int[] cipherText = SDES.encrypt(plainText, key);
+                var decryptedText = SDES.decrypt(cipherText, key);
+                log.info("Decrypted Text: " + Arrays.toString(decryptedText));
+            }break;
+            case 2:{
+                var cipherText = ModifiedSDES.encrypt(plainText, key);
+                log.info("Cipher Text: " + Arrays.toString(cipherText));
 
-        log.info("Cipher Text: " + Arrays.toString(cipherText));
-
-        int[] decryptedText = SDES.decrypt(cipherText, key);
-
-        log.info("Decrypted Text: " + Arrays.toString(decryptedText));
+                var decryptedText = ModifiedSDES.decrypt(cipherText, key);
+                log.info("Decrypted Text: " + Arrays.toString(decryptedText));
+            }break;
+            default:{
+                log.info("Invalid choice");
+            }
+        }
     }
 
     private static int[] parseBinaryInput(String input, int expectedLength) {
