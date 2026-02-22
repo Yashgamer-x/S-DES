@@ -217,7 +217,6 @@ public class ModifiedSDES {
         final var column = binaryArrayToInt(columnArray);
         final var s0Value = S0[row][column];
         final var s0Result = intToBinaryArray(s0Value);
-        System.out.println("S0: "+Arrays.toString(s0Result));
         return s0Result;
     }
 
@@ -231,7 +230,6 @@ public class ModifiedSDES {
         final var column = binaryArrayToInt(columnArray);
         final var s1Value = S1[row][column];
         final var s1Result = intToBinaryArray(s1Value);
-        System.out.println("S1: "+Arrays.toString(s1Result));
         return s1Result;
     }
 
@@ -243,26 +241,15 @@ public class ModifiedSDES {
         final var leftKey = LRKey[0];
         final var rightKey = LRKey[1];
         final var epKey = EP_Function(rightKey);
-        System.out.println("EP Key: "+Arrays.toString(epKey));
-
         final var XORKey = XOR(epKey, key);
-        System.out.println("XOR Key: "+Arrays.toString(XORKey));
-
         final var LRXORKey = breakIntoHalf(XORKey);
         final var leftXORKey = LRXORKey[0];
         final var rightXORKey = LRXORKey[1];
-
         final var calculatedS0 = S0_Calculate(leftXORKey);
         final var calculatedS1 = S1_Calculate(rightXORKey);
         final var mergedSBox = mergeKey(calculatedS0, calculatedS1);
-        System.out.println("Merged SBox: "+Arrays.toString(mergedSBox));
-
         final var permutedP4 = p4Permutation(mergedSBox);
-        System.out.println("Permuted P4: "+Arrays.toString(permutedP4));
-
         final var LXP4 = XOR(permutedP4, leftKey);
-        System.out.println("LXP 4: "+Arrays.toString(LXP4));
-
         return mergeKey(LXP4, rightKey);
     }
 
@@ -283,24 +270,12 @@ public class ModifiedSDES {
         var permutedGeneratedKeys = keyGeneration(key);
         var K1 = permutedGeneratedKeys[0];
         var K2 = permutedGeneratedKeys[1];
-        System.out.println("Key 1: "+Arrays.toString(K1));
-        System.out.println("Key 2: "+Arrays.toString(K2));
-
         var initialledPermutation = initialPermutation(plainText);
-        System.out.println("After IP: "+Arrays.toString(initialledPermutation));
-
         final var fk1 = complexFunction(initialledPermutation, K1);
-        System.out.println("FK1: "+Arrays.toString(fk1));
-
         final var SW = switchBlocks(fk1);
         log.info("SW: "+Arrays.toString(SW));
-
         final var fk2 = complexFunction(SW, K2);
-        System.out.println("FK2: "+Arrays.toString(fk2));
-
         final var inversePermutation = inversePermutation(fk2);
-        System.out.println("Inverse Permutation: "+Arrays.toString(inversePermutation));
-
         return inversePermutation;
     }
 
@@ -313,24 +288,12 @@ public class ModifiedSDES {
         var permutedGeneratedKeys = keyGeneration(key);
         var K1 = permutedGeneratedKeys[0];
         var K2 = permutedGeneratedKeys[1];
-        System.out.println("Key 1: "+Arrays.toString(K1));
-        System.out.println("Key 2: "+Arrays.toString(K2));
-
         var initialledPermutation = initialPermutation(cipherText);
-        System.out.println("After IP: "+Arrays.toString(initialledPermutation));
-
         final var fk2 = complexFunction(initialledPermutation, K2);
-        System.out.println("FK1: "+Arrays.toString(fk2));
-
         final var SW = switchBlocks(fk2);
         log.info("SW: "+Arrays.toString(SW));
-
         final var fk1 = complexFunction(SW, K1);
-        System.out.println("FK2: "+Arrays.toString(fk1));
-
         final var inversePermutation = inversePermutation(fk1);
-        System.out.println("Inverse Permutation: "+Arrays.toString(inversePermutation));
-
         return inversePermutation;
     }
 }
