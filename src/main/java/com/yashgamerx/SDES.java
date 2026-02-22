@@ -1,7 +1,10 @@
 package com.yashgamerx;
 
+import lombok.extern.java.Log;
+
 import java.util.Arrays;
 
+@Log
 public class SDES {
     public static final int[] P10 = {3, 5, 2, 7, 4, 10, 1, 9, 8, 6};
     public static final int[] P8 = {6, 3, 7, 4, 8, 5, 10, 9};
@@ -228,12 +231,39 @@ public class SDES {
         System.out.println("FK1: "+Arrays.toString(fk1));
 
         final var SW = switchBlocks(fk1);
-        System.out.println("SW: "+Arrays.toString(SW));
+        log.info("SW: "+Arrays.toString(SW));
 
         final var fk2 = complexFunction(SW, K2);
         System.out.println("FK2: "+Arrays.toString(fk2));
 
         final var inversePermutation = inversePermutation(fk2);
+        System.out.println("Inverse Permutation: "+Arrays.toString(inversePermutation));
+
+        return inversePermutation;
+    }
+
+    public static int[] decrypt(int[] cipherText, int[] key){
+        if(cipherText.length != 8) throw new IllegalArgumentException("Incorrect Plain-Text length");
+        if(key.length != 10) throw new IllegalArgumentException("Incorrect Key length");
+        var permutedGeneratedKeys = keyGeneration(key);
+        var K1 = permutedGeneratedKeys[0];
+        var K2 = permutedGeneratedKeys[1];
+        System.out.println("Key 1: "+Arrays.toString(K1));
+        System.out.println("Key 2: "+Arrays.toString(K2));
+
+        var initialledPermutation = initialPermutation(cipherText);
+        System.out.println("After IP: "+Arrays.toString(initialledPermutation));
+
+        final var fk2 = complexFunction(initialledPermutation, K2);
+        System.out.println("FK1: "+Arrays.toString(fk2));
+
+        final var SW = switchBlocks(fk2);
+        log.info("SW: "+Arrays.toString(SW));
+
+        final var fk1 = complexFunction(SW, K1);
+        System.out.println("FK2: "+Arrays.toString(fk1));
+
+        final var inversePermutation = inversePermutation(fk1);
         System.out.println("Inverse Permutation: "+Arrays.toString(inversePermutation));
 
         return inversePermutation;
